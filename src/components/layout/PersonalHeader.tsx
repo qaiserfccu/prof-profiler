@@ -10,11 +10,12 @@ const PersonalHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
+    { name: 'Home', href: '/personal' },
     { name: 'About', href: '/personal/about' },
-    { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Portfolio', href: '/personal/portfolio' },
     { name: 'Skills', href: '/personal/about#skills' },
     { name: 'Experience', href: '/personal/about#experience' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Contact', href: '/personal/contact' },
   ];
 
   return (

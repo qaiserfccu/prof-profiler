@@ -6,7 +6,7 @@ const memberInfo = {
   name: 'Rao Muhammad Afzal Nadeem',
   role: 'Retired Police Officer - Punjab Police',
   navigationItems: [
-    { name: 'About', href: '/family/father' },
+    { name: 'Home', href: '/family/father' },
     { name: 'Career', href: '/family/father/career' },
     { name: 'Achievements', href: '/family/father/achievements' },
     { name: 'Gallery', href: '/family/father/gallery' }

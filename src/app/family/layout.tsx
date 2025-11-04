@@ -1,27 +1,23 @@
-'use client';
-
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import { ReactNode } from 'react';
 
 export default function FamilyLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  // This layout will only apply to pages directly under /family
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
-  const isMainFamilyPage = pathname === '/family' || 
-    pathname === '/family/gallery' || 
-    pathname === '/family/timeline' || 
-    pathname === '/family/tree';
-
+  // Family layout only wraps top-level family pages.
+  // Member subroutes use their own MemberLayout which provides MemberHeader.
+  // This layout is NOT used for /family/father/*, /family/mother/*, etc.
+  // Those routes use their own layout.tsx files that wrap with MemberLayout.
   return (
     <>
-      {isMainFamilyPage && <Header />}
+      <Header />
       <main className="min-h-screen pt-16">
         {children}
       </main>
-      {isMainFamilyPage && <Footer />}
+      <Footer />
     </>
   );
 }

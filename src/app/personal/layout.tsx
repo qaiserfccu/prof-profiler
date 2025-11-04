@@ -1,7 +1,6 @@
 'use client';
 
 import PersonalHeader from '@/components/layout/PersonalHeader';
-import Footer from '@/components/layout/Footer';
 
 export default function PersonalLayout({
   children,

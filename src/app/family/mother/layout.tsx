@@ -6,7 +6,7 @@ const memberInfo = {
   name: 'Razia Afzal',
   role: 'Retired High School Teacher',
   navigationItems: [
-    { name: 'About', href: '/family/mother' },
+    { name: 'Home', href: '/family/mother' },
     { name: 'Career', href: '/family/mother/career' },
     { name: 'Education', href: '/family/mother/education' },
     { name: 'Gallery', href: '/family/mother/gallery' }

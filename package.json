@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@modelcontextprotocol/sdk": "^1.21.0",
     "axios": "^1.13.1",
     "framer-motion": "^12.23.24",
     "next": "16.0.1",

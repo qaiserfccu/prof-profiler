@@ -4,6 +4,8 @@ import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { FaUserTie, FaChalkboardTeacher, FaUserMd, FaLaptopCode, FaFemale, FaPrescription } from 'react-icons/fa';
 
 export default function Home() {
@@ -53,8 +55,10 @@ export default function Home() {
   ];
 
   return (
-    <Section className="bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 dark:from-blue-950 dark:via-indigo-950/30 dark:to-purple-950/50">
-      <Container>
+    <>
+      <Header />
+      <Section className="bg-gradient-to-br from-blue-50/50 via-indigo-50/30 to-purple-50/50 dark:from-blue-950 dark:via-indigo-950/30 dark:to-purple-950/50">
+        <Container>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-6">
@@ -101,6 +105,8 @@ export default function Home() {
           </div>
         </div>
       </Container>
-    </Section>
+      </Section>
+      <Footer />
+    </>
   );
 }
