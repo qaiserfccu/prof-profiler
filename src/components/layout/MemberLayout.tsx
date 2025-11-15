@@ -1,7 +1,6 @@
 'use client';
 
 import MemberHeader from '@/components/layout/MemberHeader';
-import Footer from '@/components/layout/Footer';
 
 interface MemberLayoutProps {
   children: React.ReactNode;

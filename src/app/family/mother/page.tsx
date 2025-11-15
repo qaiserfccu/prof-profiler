@@ -3,7 +3,7 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import { FaChalkboardTeacher, FaAward, FaBookReader, FaUsers } from 'react-icons/fa';
+import { FaChalkboardTeacher, FaAward, FaBookReader } from 'react-icons/fa';
 
 export default function MotherPage() {
   const achievements = [

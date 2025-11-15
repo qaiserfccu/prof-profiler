@@ -3,7 +3,6 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 
 export default function FamilyGallery() {
   // Note: Replace these with actual image paths once you have the family photos

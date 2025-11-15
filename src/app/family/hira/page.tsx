@@ -3,7 +3,7 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import { FaPrescription, FaFlask, FaPills, FaClinicMedical } from 'react-icons/fa';
+import { FaPrescription, FaFlask, FaPills } from 'react-icons/fa';
 
 export default function HiraPage() {
   const specializations = [

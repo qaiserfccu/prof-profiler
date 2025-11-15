@@ -3,7 +3,7 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import { FaUserTie, FaChalkboardTeacher, FaUserMd, FaLaptopCode, FaFemale, FaPrescription } from 'react-icons/fa';
+import { FaLaptopCode } from 'react-icons/fa';
 
 export default function FamilyTimeline() {
   const timelineEvents = [

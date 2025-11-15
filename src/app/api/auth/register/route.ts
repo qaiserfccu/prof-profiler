@@ -41,11 +41,11 @@ export async function POST(request: NextRequest) {
     }
     
     // Validate password strength (min 12 chars, mixed case, numbers, symbols)
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s])[^\s]{12,}$/;
     if (!passwordRegex.test(body.password)) {
       return NextResponse.json(
         { 
-          error: 'Password must be at least 12 characters and contain uppercase, lowercase, number, and special character' 
+          error: 'Password must be at least 12 characters and contain uppercase, lowercase, number, and special character (any non-alphanumeric symbol)' 
         },
         { status: 400 }
       );
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     // }
     
     // Hash password
-    const passwordHash = await hashPassword(body.password);
+    // const passwordHash = await hashPassword(body.password);
     
     // TODO: Create user in database
     // const user = await db.users.create({

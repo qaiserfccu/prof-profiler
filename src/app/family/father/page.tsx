@@ -3,7 +3,7 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import { FaUserTie, FaMedal, FaGraduationCap, FaShieldAlt, FaHandshake } from 'react-icons/fa';
+import { FaUserTie, FaMedal } from 'react-icons/fa';
 
 export default function FatherPage() {
   const achievements = [

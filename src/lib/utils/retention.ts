@@ -12,6 +12,7 @@ export async function purgeExpiredData(): Promise<{
   photosDeleted: number;
   sessionsDeleted: number;
 }> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const now = new Date();
   
   let resumesDeleted = 0;

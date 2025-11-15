@@ -70,7 +70,7 @@ function base64UrlDecode(data: string): string {
  * @returns JWT token
  */
 export function signJWT(
-  payload: Omit<JWTPayload, 'iat' | 'exp'>,
+  payload: Omit<JWTPayload, 'iat' | 'exp'> & { sub: string },
   expiresIn: number = 86400 // 24 hours
 ): string {
   const secret = getJWTSecret();
@@ -126,6 +126,11 @@ export function verifyJWT(token: string): JWTPayload | null {
       encodedSignature.replace(/-/g, '+').replace(/_/g, '/'),
       'base64'
     );
+    
+    // Check if signatures have the same length before comparison
+    if (expectedSignature.length !== actualSignature.length) {
+      return null;
+    }
     
     if (!crypto.timingSafeEqual(expectedSignature, actualSignature)) {
       return null;

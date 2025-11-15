@@ -12,7 +12,7 @@
  *   0 2 * * * cd /path/to/project && node scripts/purge-expired-data.mjs >> /var/log/data-purge.log 2>&1
  */
 
-import { purgeExpiredData, getRetentionStats } from '../src/lib/utils/retention.ts';
+import { purgeExpiredData, getRetentionStats } from '../src/lib/utils/retention.js';
 
 async function main() {
   console.log(`[${new Date().toISOString()}] Starting data purge job...`);
