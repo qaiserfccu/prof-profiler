@@ -9,7 +9,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken } from '@/lib/security/jwt';
 import { encryptFile } from '@/lib/security/encryption';
-import { uploadEncryptedFile } from '@/lib/storage';
 
 // Rate limit: 10 uploads per hour
 // TODO: Apply rate limiting middleware
@@ -73,7 +72,7 @@ export async function POST(request: NextRequest) {
     const fileBuffer = Buffer.from(arrayBuffer);
     
     // Encrypt file
-    const { encryptedData, iv, authTag } = encryptFile(fileBuffer);
+    encryptFile(fileBuffer);
     
     // Generate unique filename
     const timestamp = Date.now();
@@ -86,7 +85,7 @@ export async function POST(request: NextRequest) {
     //   fileName,
     //   userId
     // );
-    const storageLocation = `s3://demo-bucket/users/${userId}/files/${fileName}`;
+    // const storageLocation = `s3://demo-bucket/users/${userId}/files/${fileName}`;
     
     // Calculate retention date
     const retentionDays = parseInt(process.env.RETENTION_DAYS || '30', 10);

@@ -7,7 +7,6 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword } from '@/lib/security/auth';
 import { createAccessToken, createRefreshToken } from '@/lib/security/jwt';
 
 // Rate limit: 5 requests per 15 minutes

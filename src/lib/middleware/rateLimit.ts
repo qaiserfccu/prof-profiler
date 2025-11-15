@@ -11,6 +11,9 @@ interface RateLimitConfig {
 }
 
 // In-memory store for rate limiting (use Redis in production)
+// WARNING: This implementation will NOT work correctly in serverless environments like Vercel
+// where each request may hit a different instance. For production use in serverless environments,
+// use Redis or another distributed store to maintain rate limit state across instances.
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 
 /**

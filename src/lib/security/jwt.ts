@@ -127,6 +127,11 @@ export function verifyJWT(token: string): JWTPayload | null {
       'base64'
     );
     
+    // Check if signatures have the same length before comparison
+    if (expectedSignature.length !== actualSignature.length) {
+      return null;
+    }
+    
     if (!crypto.timingSafeEqual(expectedSignature, actualSignature)) {
       return null;
     }

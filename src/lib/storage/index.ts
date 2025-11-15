@@ -89,7 +89,8 @@ export async function downloadEncryptedFile(
   return Buffer.concat(chunks);
   */
   
-  throw new Error('Storage download not implemented');
+  const config = getStorageConfig();
+  throw new Error(`Storage download not implemented for provider: ${config.provider}. Please configure AWS SDK or GCS client.`);
 }
 
 /**
@@ -128,7 +129,9 @@ export async function generatePresignedUploadUrl(
   url: string;
   fields: Record<string, string>;
 }> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const config = getStorageConfig();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const key = `users/${userId}/temp/${fileName}`;
   
   // TODO: Implement presigned URL generation

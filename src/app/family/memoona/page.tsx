@@ -3,7 +3,7 @@
 import Section from '@/components/ui/Section';
 import Container from '@/components/ui/Container';
 import { motion } from 'framer-motion';
-import { FaUserMd, FaHeartbeat, FaBriefcaseMedical, FaGraduationCap } from 'react-icons/fa';
+import { FaUserMd, FaHeartbeat, FaBriefcaseMedical } from 'react-icons/fa';
 
 export default function MemoonaPage() {
   const specializations = [

@@ -132,7 +132,7 @@ export async function parsePdfResume(buffer: Buffer): Promise<ParsedResume> {
   // const data = await pdf(buffer);
   // return parseResumeText(data.text, 'pdf');
   
-  throw new Error('PDF parsing not implemented. Install pdf-parse library.');
+  throw new Error('PDF parsing not implemented. Install with: npm install pdf-parse');
 }
 
 /**
