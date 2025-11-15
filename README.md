@@ -1,6 +1,20 @@
 # Portfolio Generation Platform
 
 An advanced web-creation platform that generates visually polished Next.js portfolio websites from user resumes, CVs, and profile data. Built with security, privacy, and production-readiness in mind.
+## Project Overview
+
+This is a professional portfolio website built with Next.js 16, featuring:
+- Modern, responsive design with Tailwind CSS
+- Smooth animations with Framer Motion
+- Portfolio showcase with project galleries
+- Contact information and social links
+
+## Documentation
+
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development workflow, file organization, and best practices
+- **[.gitignore.production](./.gitignore.production)** - Reference for production-specific file exclusions
+
+## Getting Started
 
 ## 🌟 Features
 

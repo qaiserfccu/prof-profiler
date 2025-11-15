@@ -23,6 +23,21 @@ export default function Home() {
       path: '/family/mother',
       icon: FaChalkboardTeacher,
       description: 'Educated and inspired generations of students throughout her teaching career.'
+      title: 'Software Engineer',
+      description: 'Built responsive web applications and RESTful APIs. Collaborated with cross-functional teams to deliver high-quality solutions.',
+      date: '2013 - 2018',
+      tags: ['JavaScript', 'Python', 'MySQL', 'REST APIs'],
+      image: '/images/project3.jpg'
+    }
+  ];
+
+  const projects = [
+    {
+      title: 'Tourism Management System',
+      description: 'A comprehensive platform for managing tourism activities, bookings, and customer relationships.',
+      tags: ['React', 'Node.js', 'MongoDB', 'AWS'],
+      link: '/portfolio',
+      image: '/images/project1.jpg'
     },
     {
       name: 'Dr. Faisal Nadeem',

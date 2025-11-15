@@ -1,0 +1,24 @@
+# Production .gitignore
+# Use this file as reference for excluding personal/development files from production builds
+
+# Personal images (replace with your own or use placeholders)
+public/images/IMG_*.PNG
+public/images/IMG_*.JPG
+public/images/IMG_*.png
+public/images/IMG_*.jpg
+
+# Development scripts output
+scripts/output/
+scripts/temp/
+
+# Personal configuration
+.env.local
+.env.production.local
+.env.development.local
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
