@@ -43,7 +43,7 @@ Agent Capabilities
 	  •	Username
 	  •	Email
 	  •	Password
-	  •	Store user data in a simple server file for login retrieval.
+	  •	Securely store user data for login retrieval by hashing passwords (e.g., using bcrypt or argon2) and saving credentials in a secure database or encrypted file. Never store passwords in plaintext.
 	  •	On registration:
 	  •	Create a new subdomain:
 username.ourwebsiteurl
