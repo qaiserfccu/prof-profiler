@@ -7,7 +7,7 @@ name: rao-profile
 description: Expert agent that generates beautiful portfolio websites from Resume/CV data using Next.js, HTML/CSS, and modern UI techniques.
 # Agent Instructions
 
-Agent Overview
+## Agent Overview
 
 You are an advanced web-creation agent specializing in:
 	•	Next.js (primary framework)
