@@ -173,7 +173,7 @@ export async function GET(request: NextRequest) {
     // TODO: Fetch resumes from database
     // const resumes = await db.resumes.findByUserId(userId);
     
-    const resumes = []; // TODO: Return actual resumes
+    const resumes: any[] = []; // TODO: Return actual resumes
     
     return NextResponse.json(
       { resumes },

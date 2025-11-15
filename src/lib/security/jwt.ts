@@ -70,7 +70,7 @@ function base64UrlDecode(data: string): string {
  * @returns JWT token
  */
 export function signJWT(
-  payload: Omit<JWTPayload, 'iat' | 'exp'>,
+  payload: Omit<JWTPayload, 'iat' | 'exp'> & { sub: string },
   expiresIn: number = 86400 // 24 hours
 ): string {
   const secret = getJWTSecret();

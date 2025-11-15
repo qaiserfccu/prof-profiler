@@ -27,12 +27,7 @@ export async function hashPassword(password: string): Promise<string> {
   const derivedKey = (await scrypt(
     password,
     salt,
-    KEY_LENGTH,
-    {
-      N: SCRYPT_COST,
-      r: SCRYPT_BLOCK_SIZE,
-      p: SCRYPT_PARALLELIZATION,
-    }
+    KEY_LENGTH
   )) as Buffer;
   
   // Store algorithm, cost, salt, and hash together
@@ -63,12 +58,7 @@ export async function verifyPassword(
     const derivedKey = (await scrypt(
       password,
       salt,
-      KEY_LENGTH,
-      {
-        N: cost,
-        r: SCRYPT_BLOCK_SIZE,
-        p: SCRYPT_PARALLELIZATION,
-      }
+      KEY_LENGTH
     )) as Buffer;
     
     // Constant-time comparison to prevent timing attacks
