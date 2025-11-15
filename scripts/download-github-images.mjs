@@ -1,3 +1,12 @@
+/**
+ * download-github-images.mjs
+ * 
+ * Utility script to download GitHub-related images from Unsplash.
+ * This is a development/setup task to populate placeholder images.
+ * 
+ * Usage: node scripts/download-github-images.mjs
+ */
+
 import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
