@@ -11,10 +11,50 @@ This is a professional portfolio website built with Next.js 16, featuring:
 
 ## Documentation
 
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - 🚀 **START HERE** for deployment and environment variable setup
 - **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development workflow, file organization, and best practices
 - **[.gitignore.production](./.gitignore.production)** - Reference for production-specific file exclusions
 
-## Getting Started
+## 🚀 Getting Started
+
+**⚠️ IMPORTANT**: Before running the application, you must set up environment variables. See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for detailed instructions.
+
+### Quick Start (Local Development)
+
+1. **Generate environment variables**:
+```bash
+node scripts/generate-env.js
+```
+
+2. **Create `.env.local`** and paste the generated variables
+
+3. **Install dependencies**:
+```bash
+npm ci
+```
+
+4. **Run development server**:
+```bash
+npm run dev
+```
+
+5. **Open your browser** at [http://localhost:3000](http://localhost:3000)
+
+### For Production Deployment
+
+See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for complete Vercel deployment instructions.
+
+## 🔐 Authentication
+
+The application now includes a complete authentication system:
+
+- **Login page**: `/login`
+- **Registration page**: `/register`  
+- **Protected routes**: All `/family/*` pages require authentication
+- **Public pages**: `/`, `/personal/*`, `/contact` remain public
+- **Role-based access**: Family pages require 'superuser' or 'admin' role
+
+**Default credentials**: All registered users automatically get 'superuser' role (demo mode)
 
 ## 🌟 Features
 
