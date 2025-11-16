@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { FaUserTie, FaChalkboardTeacher, FaUserMd, FaLaptopCode, FaFemale, FaPrescription } from 'react-icons/fa';
+import { FaUserTie, FaChalkboardTeacher, FaUserMd, FaLaptopCode, FaFemale, FaPrescription, FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 
 export default function Home() {
   const familyMembers = [
@@ -23,34 +23,23 @@ export default function Home() {
       path: '/family/mother',
       icon: FaChalkboardTeacher,
       description: 'Educated and inspired generations of students throughout her teaching career.'
+    }
+  ];
+
+  const projects = [
+    {
+      title: 'Tourism Management System',
+      description: 'A comprehensive platform for managing tourism activities, bookings, and customer relationships.',
+      tags: ['React', 'Node.js', 'MongoDB', 'AWS'],
+      link: '/portfolio',
+      image: '/images/project1.jpg'
     },
     {
-      name: 'Dr. Faisal Nadeem',
-      role: 'MBBS Doctor - Pulmonologist',
-      path: '/family/faisal',
-      icon: FaUserMd,
-      description: 'Specialized in pulmonology, helping patients with respiratory conditions.'
-    },
-    {
-      name: 'Rao Muhammad Qaiser Nadeem',
-      role: 'Senior Full Stack Developer',
-      path: '/personal/about',
-      icon: FaLaptopCode,
-      description: 'Expert in full-stack development, creating innovative software solutions.'
-    },
-    {
-      name: 'Dr. Memoona Umar',
-      role: 'MBBS Doctor - Gynecologist',
-      path: '/family/memoona',
-      icon: FaFemale,
-      description: "Specialized in gynecology, providing care for women's health."
-    },
-    {
-      name: 'Dr. Hira Nadeem',
-      role: 'Doctor of Pharmacy (Pharm D)',
-      path: '/family/hira',
-      icon: FaPrescription,
-      description: 'Expert in pharmaceutical sciences and medication management.'
+      title: 'Software Engineer',
+      description: 'Built responsive web applications and RESTful APIs. Collaborated with cross-functional teams to deliver high-quality solutions.',
+      date: '2013 - 2018',
+      tags: ['JavaScript', 'Python', 'MySQL', 'REST APIs'],
+      image: '/images/project3.jpg'
     }
   ];
 
@@ -64,8 +53,38 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-6">
               Rao's Family
             </h1>
-            <p className="text-gray-700 dark:text-gray-300 text-lg">
+            <p className="text-gray-700 dark:text-gray-300 text-lg mb-6">
               A family of professionals from Lahore, Pakistan, dedicated to serving society through various fields.
+            </p>
+            
+            {/* Auth buttons */}
+            <div className="flex justify-center gap-4 mb-8">
+              <Link href="/login">
+                <motion.button
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors shadow-lg"
+                >
+                  <FaSignInAlt />
+                  Login
+                </motion.button>
+              </Link>
+              <Link href="/register">
+                <motion.button
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                  className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium transition-colors shadow-lg"
+                >
+                  <FaUserPlus />
+                  Register
+                </motion.button>
+              </Link>
+            </div>
+            
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Login or register to access family member portfolios
             </p>
           </div>
 
