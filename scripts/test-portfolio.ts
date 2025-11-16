@@ -91,8 +91,8 @@ async function testPortfolioGeneration() {
     console.log('8️⃣ Getting user statistics...');
     const stats = await getUserStatistics(testUser.id);
     console.log('✅ User statistics:');
-    console.log(`   - Resumes: ${stats.resumeCount}/${stats.maxResumes}`);
-    console.log(`   - Photos: ${stats.photoCount}/${stats.maxPhotos}`);
+    console.log(`   - Resumes: ${stats.resumeCount}/${stats.resumeCount}`);
+    console.log(`   - Photos: ${stats.photoCount}/${stats.photoCount}`);
     console.log(`   - Portfolios: ${stats.portfolioCount}\n`);
 
     console.log('🎉 All tests passed!\n');
