@@ -58,6 +58,22 @@ The application now includes a complete authentication system:
 
 ## 🌟 Features
 
+### ✨ NEW: AI-Generated Dynamic Portfolio Pages
+
+- **AI-Powered Content Generation**: Upload a resume and let AI generate complete portfolio websites
+- **Per-Resume Portfolios**: Generate up to 2 unique portfolios (free tier) from different resumes
+- **Four Dynamic Pages**: Home, About, Portfolio/Projects, and Contact pages with AI-generated content
+- **Unique Themes**: Random gradient theme applied to each generated portfolio
+- **Portfolio Photos**: Upload up to 3 photos that AI uses throughout your portfolio
+- **Smart Content**: AI expands beyond resume text to create engaging narratives
+- **Public Sharing**: Share portfolios via clean URLs like `/portfolio/{userId}/{resumeId}/home`
+- **Print to PDF**: Export About page as a professional résumé-style PDF
+- **Contact Forms**: Working contact forms on each portfolio
+
+📖 **[Full Documentation](./docs/AI_PORTFOLIO_FEATURE.md)** - Detailed guide on the AI portfolio feature
+
+### Other Features
+
 - **Portfolio Generation**: Automatically create professional portfolio websites from uploaded resumes
 - **Multi-Tenant Architecture**: Serve multiple user portfolios from a single application (username-based routing)
 - **Secure Authentication**: OAuth2 (GitHub/Google) or self-hosted authentication with bcrypt/argon2

@@ -662,6 +662,129 @@ Subscribe to events for real-time notifications.
 }
 ```
 
+---
+
+### Portfolio Public Pages
+
+#### Get Public Portfolio Page
+
+```http
+GET /api/portfolio/public?userId={userId}&resumeId={resumeId}&pageType={pageType}
+Authorization: Not Required (Public)
+```
+
+**Query Parameters:**
+- `userId` (required): User ID who owns the portfolio
+- `resumeId` (required): Resume ID associated with the portfolio
+- `pageType` (required): Page type - one of: `home`, `about`, `portfolio`, `contact`
+
+**Response:** `200 OK`
+```json
+{
+  "pageType": "home",
+  "title": "Home - John Doe",
+  "content": {
+    "heroTitle": "John Doe",
+    "heroSubtitle": "Full Stack Developer",
+    "heroDescription": "Passionate about creating...",
+    "highlights": [
+      {
+        "icon": "code",
+        "title": "5+ Years Experience",
+        "description": "Building scalable applications"
+      }
+    ],
+    "featuredSkills": ["JavaScript", "React", "Node.js"]
+  },
+  "photos": [
+    "https://storage.example.com/user123/photo1.jpg",
+    "https://storage.example.com/user123/photo2.jpg"
+  ],
+  "publicUrl": "/portfolio/user123/resume456/home"
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: Missing or invalid parameters
+- `403 Forbidden`: Portfolio doesn't belong to specified user
+- `404 Not Found`: Portfolio or page not found
+
+---
+
+#### Submit Contact Form
+
+```http
+POST /api/contact
+Content-Type: application/json
+Authorization: Not Required (Public)
+```
+
+**Request Body:**
+```json
+{
+  "name": "Jane Smith",
+  "email": "jane@example.com",
+  "subject": "Job Opportunity",
+  "message": "Hi, I would like to discuss...",
+  "portfolioUserId": "user123",
+  "portfolioResumeId": "resume456"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "success": true,
+  "message": "Message received successfully"
+}
+```
+
+**Error Responses:**
+- `400 Bad Request`: Missing required fields or invalid email format
+- `500 Internal Server Error`: Failed to process submission
+
+**Notes:**
+- In production, this should include rate limiting
+- Currently logs submissions; email notifications to be implemented
+- Message length: 10-5000 characters
+
+---
+
+## Public Portfolio Routes
+
+The following routes are publicly accessible without authentication:
+
+### Portfolio Pages
+
+- **Home:** `/portfolio/[userId]/[resumeId]/home`
+  - Hero section with photo
+  - Highlights and featured skills
+  - Photo gallery
+
+- **About:** `/portfolio/[userId]/[resumeId]/about`
+  - Detailed professional information
+  - Experience, education, skills sections
+  - Print-friendly format
+
+- **Projects:** `/portfolio/[userId]/[resumeId]/projects`
+  - Project showcase with images
+  - Technology stack
+  - GitHub and live demo links
+
+- **Contact:** `/portfolio/[userId]/[resumeId]/contact`
+  - Contact information
+  - Working contact form
+  - Availability status
+
+All portfolio pages:
+- Use dynamic gradient themes from database
+- Include navigation between pages
+- Show "Back to Dashboard" for authenticated owners
+- Are SEO-friendly with SSR/SSG
+- Support responsive design
+
+---
+
 ## SDK Libraries
 
 Official SDK libraries coming soon:

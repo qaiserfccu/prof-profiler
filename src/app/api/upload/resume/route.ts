@@ -11,6 +11,7 @@ import { verifyAccessToken } from '@/lib/security/jwt';
 import { encryptFile } from '@/lib/security/encryption';
 import { uploadEncryptedFile } from '@/lib/storage';
 import { Resume } from '@/lib/db/schema';
+import { canUploadMoreResumes, createResume, listUserResumes } from '@/lib/db/services';
 
 // Rate limit: 10 uploads per hour
 // TODO: Apply rate limiting middleware
@@ -42,9 +43,19 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Check if user can upload more resumes (max 2 for free users)
+    const canUpload = await canUploadMoreResumes(userId);
+    if (!canUpload) {
+      return NextResponse.json(
+        { error: 'Maximum resume limit reached. Free users can upload up to 2 resumes.' },
+        { status: 403 }
+      );
+    }
+    
     // Parse multipart form data
     const formData = await request.formData();
     const file = formData.get('resume') as File | null;
+    const aiNotes = formData.get('aiNotes') as string | null;
     
     if (!file) {
       return NextResponse.json(
@@ -81,7 +92,7 @@ export async function POST(request: NextRequest) {
     const extension = file.name.split('.').pop() || 'bin';
     const fileName = `resume_${timestamp}.${extension}.enc`;
     
-    // TODO: Upload to storage
+    // TODO: Upload to storage (currently using mock path)
     // const storageLocation = await uploadEncryptedFile(
     //   encryptedData,
     //   fileName,
@@ -89,52 +100,22 @@ export async function POST(request: NextRequest) {
     // );
     const storageLocation = `s3://demo-bucket/users/${userId}/files/${fileName}`;
     
-    // Calculate retention date
-    const retentionDays = parseInt(process.env.RETENTION_DAYS || '30', 10);
-    const retentionUntil = new Date();
-    retentionUntil.setDate(retentionUntil.getDate() + retentionDays);
-    
-    // TODO: Save to database
-    // const resume = await db.resumes.create({
-    //   userId,
-    //   fileName: file.name,
-    //   format: extension,
-    //   storedLocation: storageLocation,
-    //   encryptionIv: iv,
-    //   authTag: authTag,
-    //   uploadedAt: new Date(),
-    //   retentionUntil,
-    // });
-    
-    const resumeId = 'demo-resume-id'; // TODO: Use actual resume ID
-    
-    // TODO: Parse resume content (AI/ML processing)
-    // const parsedData = await parseResume(fileBuffer, file.type);
-    // await db.resumes.update(resumeId, { parsed: parsedData });
-    
-    // TODO: Log audit event
-    // await db.auditLogs.create({
-    //   userId,
-    //   action: 'resume_uploaded',
-    //   resource: 'resume',
-    //   resourceId: resumeId,
-    //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
-    //   userAgent: request.headers.get('user-agent') || 'unknown',
-    //   metadata: {
-    //     fileName: file.name,
-    //     fileSize: file.size,
-    //     fileType: file.type,
-    //   },
-    // });
+    // Save to database using new services
+    const resume = await createResume({
+      userId,
+      resumeUrl: storageLocation,
+      originalFilename: file.name,
+      aiNotes: aiNotes || undefined,
+    });
     
     return NextResponse.json(
       {
         message: 'Resume uploaded and encrypted successfully',
         resume: {
-          id: resumeId,
-          fileName: file.name,
-          uploadedAt: new Date().toISOString(),
-          retentionUntil: retentionUntil.toISOString(),
+          id: resume.id,
+          fileName: resume.originalFilename,
+          uploadedAt: resume.uploadedAt.toISOString(),
+          portfolioGenerated: resume.portfolioGenerated,
         },
       },
       { status: 201 }
@@ -172,10 +153,8 @@ export async function GET(request: NextRequest) {
       );
     }
     
-    // TODO: Fetch resumes from database
-    // const resumes = await db.resumes.findByUserId(userId);
-    
-    const resumes: Resume[] = []; // TODO: Return actual resumes
+    // Fetch resumes from database
+    const resumes = await listUserResumes(userId);
     
     return NextResponse.json(
       { resumes },
