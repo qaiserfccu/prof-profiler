@@ -1,0 +1,21 @@
+{
+    "dbcode.connections": [
+        {
+            "connectionId": "Mxs1VewNAt_Z_2UKUxZBA",
+            "name": "localhost",
+            "driver": "postgres",
+            "color": "#7655FF",
+            "connectionType": "host",
+            "host": "localhost",
+            "port": 5433,
+            "ssl": false,
+            "username": "postgres",
+            "password": "",
+            "savePassword": "secretStorage",
+            "database": "portfolio_db",
+            "readOnly": false,
+            "postConnectionSqlType": "inline",
+            "connectionTimeout": 30
+        }
+    ]
+}
