@@ -3,12 +3,9 @@
  * Applies database schema migrations and updates
  */
 
-import { getPool } from './connection';
 import { initializeDatabase } from './init';
 
 export async function migrateDatabase() {
-  const pool = getPool();
-
   try {
     console.log('🔄 Starting database migration...');
 
@@ -22,6 +19,7 @@ export async function migrateDatabase() {
 
     // Future migrations can be added here with version checks
     // Example:
+    // const pool = getPool();
     // await applyMigrationV2(pool);
     // await applyMigrationV3(pool);
 
