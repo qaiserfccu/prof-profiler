@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createAccessToken, createRefreshToken } from '@/lib/security/jwt';
+import { hashPassword } from '@/lib/security/auth';
+import { createUser, findUserByEmail } from '@/lib/db/services';
 
 // Rate limit: 5 requests per 15 minutes
 // TODO: Apply rate limiting middleware
@@ -67,27 +69,27 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // TODO: Check if user already exists in database
-    // const existingUser = await db.users.findByEmail(body.email);
-    // if (existingUser) {
-    //   return NextResponse.json(
-    //     { error: 'User already exists' },
-    //     { status: 409 }
-    //   );
-    // }
+    // Check if user already exists in database
+    const existingUser = await findUserByEmail(body.email);
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User already exists' },
+        { status: 409 }
+      );
+    }
     
-    // TODO: Hash password for production use
-    // const passwordHash = await hashPassword(body.password);
+    // Hash password
+    const passwordHash = await hashPassword(body.password);
     
-    // TODO: Create user in database
-    // const user = await db.users.create({
-    //   email: body.email,
-    //   passwordHash,
-    //   name: body.name,
-    //   provider: 'email',
-    //   emailVerified: false,
-    //   isActive: true,
-    // });
+    // Create user in database
+    const user = await createUser({
+      email: body.email,
+      passwordHash,
+      name: body.name,
+      role: 'user',
+      emailVerified: false,
+      isActive: true,
+    });
     
     // TODO: Generate email verification token
     // const verificationToken = generateVerificationToken();
@@ -100,15 +102,13 @@ export async function POST(request: NextRequest) {
     // TODO: Send verification email
     // await sendVerificationEmail(body.email, verificationToken);
     
-    // For demo purposes, create tokens (in production, only after email verification)
-    const userId = 'demo-user-id'; // TODO: Use actual user ID from database
-    const role = 'superuser'; // For demo, all users get superuser role
-    const accessToken = createAccessToken(userId, body.email, role);
-    const refreshToken = createRefreshToken(userId);
+    // Create tokens (in production, only after email verification)
+    const accessToken = createAccessToken(user.id, user.email, user.role);
+    const refreshToken = createRefreshToken(user.id);
     
     // TODO: Store refresh token in database
     // await db.sessions.create({
-    //   userId,
+    //   userId: user.id,
     //   token: hashToken(refreshToken),
     //   expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
@@ -118,12 +118,12 @@ export async function POST(request: NextRequest) {
     // Set HTTP-only cookies
     const response = NextResponse.json(
       {
-        message: 'User registered successfully. Please check your email to verify your account.',
+        message: 'User registered successfully.',
         user: {
-          id: userId,
-          email: body.email,
-          name: body.name,
-          emailVerified: false,
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          emailVerified: user.emailVerified,
         },
       },
       { status: 201 }
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
     // await db.auditLogs.create({
     //   action: 'user_registered',
     //   resource: 'user',
-    //   resourceId: userId,
+    //   resourceId: user.id,
     //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
     //   userAgent: request.headers.get('user-agent') || 'unknown',
     // });

@@ -50,7 +50,14 @@ export async function initializeDatabase() {
         original_filename VARCHAR(255),
         uploaded_at TIMESTAMP DEFAULT NOW(),
         ai_notes TEXT,
-        portfolio_generated BOOLEAN DEFAULT FALSE
+        portfolio_generated BOOLEAN DEFAULT FALSE,
+        file_name VARCHAR(255),
+        format VARCHAR(50),
+        stored_location TEXT,
+        encryption_iv TEXT,
+        auth_tag TEXT,
+        retention_until TIMESTAMP,
+        parsed JSONB
       );
     `);
 

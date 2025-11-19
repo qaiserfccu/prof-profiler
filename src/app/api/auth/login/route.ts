@@ -8,6 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createAccessToken, createRefreshToken } from '@/lib/security/jwt';
+import { verifyPassword } from '@/lib/security/auth';
+import { findUserByEmail, updateUserLastLogin } from '@/lib/db/services';
 
 // Rate limit: 5 requests per 15 minutes
 // TODO: Apply rate limiting middleware
@@ -38,42 +40,42 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // TODO: Fetch user from database
-    // const user = await db.users.findByEmail(body.email);
-    // if (!user || !user.passwordHash) {
-    //   return NextResponse.json(
-    //     { error: 'Invalid credentials' },
-    //     { status: 401 }
-    //   );
-    // }
+    // Fetch user from database
+    const user = await findUserByEmail(body.email);
+    if (!user || !user.passwordHash) {
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      );
+    }
     
-    // TODO: Verify password
-    // const isValidPassword = await verifyPassword(body.password, user.passwordHash);
-    // if (!isValidPassword) {
-    //   // Log failed login attempt
-    //   await db.auditLogs.create({
-    //     action: 'login_failed',
-    //     resource: 'user',
-    //     resourceId: user.id,
-    //     ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
-    //     userAgent: request.headers.get('user-agent') || 'unknown',
-    //   });
-    //   
-    //   return NextResponse.json(
-    //     { error: 'Invalid credentials' },
-    //     { status: 401 }
-    //   );
-    // }
+    // Verify password
+    const isValidPassword = await verifyPassword(body.password, user.passwordHash);
+    if (!isValidPassword) {
+      // Log failed login attempt
+      // await db.auditLogs.create({
+      //   action: 'login_failed',
+      //   resource: 'user',
+      //   resourceId: user.id,
+      //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
+      //   userAgent: request.headers.get('user-agent') || 'unknown',
+      // });
+      
+      return NextResponse.json(
+        { error: 'Invalid credentials' },
+        { status: 401 }
+      );
+    }
     
-    // TODO: Check if user is active
-    // if (!user.isActive) {
-    //   return NextResponse.json(
-    //     { error: 'Account is deactivated' },
-    //     { status: 403 }
-    //   );
-    // }
+    // Check if user is active
+    if (!user.isActive) {
+      return NextResponse.json(
+        { error: 'Account is deactivated' },
+        { status: 403 }
+      );
+    }
     
-    // TODO: Check if email is verified (if required)
+    // Check if email is verified (if required)
     // if (process.env.REQUIRE_EMAIL_VERIFICATION === 'true' && !user.emailVerified) {
     //   return NextResponse.json(
     //     { error: 'Email not verified. Please check your email.' },
@@ -81,38 +83,31 @@ export async function POST(request: NextRequest) {
     //   );
     // }
     
-    // For demo purposes - accept any email/password combination
-    const userId = 'demo-user-id'; // TODO: Use actual user ID
-    const email = body.email;
-    const role = 'superuser'; // For demo, all users get superuser role
-    
     // Generate tokens
-    const accessToken = createAccessToken(userId, email, role);
-    const refreshToken = createRefreshToken(userId);
+    const accessToken = createAccessToken(user.id, user.email, user.role);
+    const refreshToken = createRefreshToken(user.id);
     
     // TODO: Store refresh token in database
     // await db.sessions.create({
-    //   userId,
+    //   userId: user.id,
     //   token: hashToken(refreshToken),
     //   expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
     //   userAgent: request.headers.get('user-agent') || 'unknown',
     // });
     
-    // TODO: Update last login timestamp
-    // await db.users.update(userId, {
-    //   lastLoginAt: new Date(),
-    // });
+    // Update last login timestamp
+    await updateUserLastLogin(user.id);
     
     // Set HTTP-only cookies
     const response = NextResponse.json(
       {
         message: 'Login successful',
         user: {
-          id: userId,
-          email: email,
-          // name: user.name,
-          // emailVerified: user.emailVerified,
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          emailVerified: user.emailVerified,
         },
       },
       { status: 200 }
@@ -137,10 +132,10 @@ export async function POST(request: NextRequest) {
     
     // TODO: Log successful login
     // await db.auditLogs.create({
-    //   userId,
+    //   userId: user.id,
     //   action: 'login_success',
     //   resource: 'user',
-    //   resourceId: userId,
+    //   resourceId: user.id,
     //   ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
     //   userAgent: request.headers.get('user-agent') || 'unknown',
     // });

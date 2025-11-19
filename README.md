@@ -11,48 +11,103 @@ This is a professional portfolio website built with Next.js 16, featuring:
 
 ## Documentation
 
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - 🚀 **START HERE** for deployment and environment variable setup
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development workflow, file organization, and best practices
-- **[.gitignore.production](./.gitignore.production)** - Reference for production-specific file exclusions
+- **[DATABASE_SETUP.md](./docs/DATABASE_SETUP.md)** - 🗄️ **START HERE** for database configuration with Neon
+- **[NEON_IMPLEMENTATION.md](./docs/NEON_IMPLEMENTATION.md)** - Implementation details and summary
+- **[AI_PORTFOLIO_FEATURE.md](./docs/AI_PORTFOLIO_FEATURE.md)** - AI portfolio generation guide
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Deployment and environment variable setup
+- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Development workflow and best practices
+- **[.gitignore.production](./.gitignore.production)** - Production file exclusions
 
 ## 🚀 Getting Started
 
-**⚠️ IMPORTANT**: Before running the application, you must set up environment variables. See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for detailed instructions.
+**⚠️ IMPORTANT**: Before running the application, you must set up the database and environment variables. See **[DATABASE_SETUP.md](./docs/DATABASE_SETUP.md)** for detailed instructions.
 
 ### Quick Start (Local Development)
 
-1. **Generate environment variables**:
+1. **Clone the repository**:
 ```bash
-node scripts/generate-env.js
+git clone https://github.com/qaiserfccu/portfolio.ai.git
+cd portfolio.ai
 ```
 
-2. **Create `.env.local`** and paste the generated variables
-
-3. **Install dependencies**:
+2. **Install dependencies**:
 ```bash
 npm ci
 ```
 
-4. **Run development server**:
+3. **Set up Neon database**:
+   - Sign up at https://neon.tech
+   - Create a new project
+   - Copy the connection string
+
+4. **Configure environment**:
+```bash
+cp .env.example .env
+```
+Edit `.env` and add:
+```env
+DB_URL=postgresql://user:password@host/database?sslmode=require
+JWT_SECRET=your_jwt_secret
+ENCRYPTION_KEY=your_encryption_key
+SESSION_SECRET=your_session_secret
+```
+
+Generate secure keys:
+```bash
+npm run generate-keys
+```
+
+5. **Test database connection**:
+```bash
+node scripts/test-db-init.mjs
+```
+
+6. **Initialize database**:
+```bash
+npm run db:init
+```
+
+7. **Run development server**:
 ```bash
 npm run dev
 ```
 
-5. **Open your browser** at [http://localhost:3000](http://localhost:3000)
+8. **Open your browser** at [http://localhost:3000](http://localhost:3000)
 
 ### For Production Deployment
 
 See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for complete Vercel deployment instructions.
 
-## 🔐 Authentication
+## 🔐 Authentication & Database
 
-The application now includes a complete authentication system:
+The application includes a complete authentication system with Neon PostgreSQL:
 
-- **Login page**: `/login`
-- **Registration page**: `/register`  
-- **Protected routes**: All `/family/*` pages require authentication
-- **Public pages**: `/`, `/personal/*`, `/contact` remain public
-- **Role-based access**: Family pages require 'superuser' or 'admin' role
+### Authentication Features
+- **Registration**: Create account with email and password at `/register`
+- **Login**: Authenticate at `/login`
+- **Secure Passwords**: Scrypt hashing algorithm (more secure than bcrypt)
+- **JWT Tokens**: HTTP-only cookies for secure session management
+- **Protected Routes**: Dashboard and family pages require authentication
+- **Public Pages**: `/`, `/personal/*`, `/contact` remain public
+- **Role-based Access**: Family pages require 'superuser' or 'admin' role
+
+### Database Features
+- **Neon PostgreSQL**: Serverless database with automatic scaling
+- **User Management**: Complete user profiles with authentication
+- **Resume Storage**: Up to 2 resumes per free user (locally stored)
+- **Photo Storage**: Up to 3 portfolio photos per user (locally stored)
+- **Portfolio Generation**: Database tracks generated portfolios and pages
+- **Automatic Tables**: Run `npm run db:init` to create all required tables
+
+### File Storage
+- **Local Storage**: Files stored in `public/uploads/` directory
+- **No AWS Costs**: Eliminates need for S3 or cloud storage
+- **Fast Access**: Direct filesystem access for uploaded files
+- **Organized Structure**: 
+  - Resumes: `public/uploads/resumes/`
+  - Photos: `public/uploads/photos/`
+
+📖 **[Database Setup Guide](./docs/DATABASE_SETUP.md)** - Complete configuration instructions
 
 **Default credentials**: All registered users automatically get 'superuser' role (demo mode)
 
@@ -100,10 +155,9 @@ This platform uses a **lightweight multi-tenant approach**:
 - **Framework**: Next.js 16 (React 19)
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
-- **Authentication**: JWT + OAuth2
-- **Encryption**: Node.js crypto (AES-256-GCM)
-- **Storage**: AWS S3 / Google Cloud Storage (with server-side encryption)
-- **Database**: PostgreSQL / MongoDB (configurable)
+- **Authentication**: JWT + Scrypt password hashing
+- **Database**: Neon PostgreSQL (serverless)
+- **Storage**: Local filesystem (public/uploads/)
 - **Deployment**: Vercel
 
 ## 🚀 Getting Started
@@ -112,9 +166,8 @@ This platform uses a **lightweight multi-tenant approach**:
 
 - Node.js 18+ 
 - npm, yarn, or pnpm
-- PostgreSQL or MongoDB instance (for user data)
-- AWS S3 or Google Cloud Storage (for file storage)
-- Vercel account (for deployment)
+- Neon PostgreSQL database (free tier available at https://neon.tech)
+- Vercel account (for deployment, optional)
 
 ### Installation
 

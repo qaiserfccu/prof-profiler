@@ -8,10 +8,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAccessToken } from '@/lib/security/jwt';
-import { encryptFile } from '@/lib/security/encryption';
-import { uploadEncryptedFile } from '@/lib/storage';
-import { Resume } from '@/lib/db/schema';
-import { canUploadMoreResumes, createResume, listUserResumes } from '@/lib/db/services';
+import { uploadFileLocally } from '@/lib/storage/local';
+import { canUploadMoreResumes, createResume, listUserResumes, findUserById } from '@/lib/db/services';
 
 // Rate limit: 10 uploads per hour
 // TODO: Apply rate limiting middleware
@@ -42,9 +40,18 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
+
+    // Get user info to check role
+    const user = await findUserById(userId);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
     
     // Check if user can upload more resumes (max 2 for free users)
-    const canUpload = await canUploadMoreResumes(userId);
+    const canUpload = await canUploadMoreResumes(userId, user.role);
     if (!canUpload) {
       return NextResponse.json(
         { error: 'Maximum resume limit reached. Free users can upload up to 2 resumes.' },
@@ -84,38 +91,31 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const fileBuffer = Buffer.from(arrayBuffer);
     
-    // Encrypt file
-    const { encryptedData, iv, authTag } = encryptFile(fileBuffer);
-    
-    // Generate unique filename
-    const timestamp = Date.now();
-    const extension = file.name.split('.').pop() || 'bin';
-    const fileName = `resume_${timestamp}.${extension}.enc`;
-    
-    // TODO: Upload to storage (currently using mock path)
-    // const storageLocation = await uploadEncryptedFile(
-    //   encryptedData,
-    //   fileName,
-    //   userId
-    // );
-    const storageLocation = `s3://demo-bucket/users/${userId}/files/${fileName}`;
+    // Upload file to local storage
+    const publicUrl = await uploadFileLocally(
+      fileBuffer,
+      file.name,
+      userId,
+      'resume'
+    );
     
     // Save to database using new services
     const resume = await createResume({
       userId,
-      resumeUrl: storageLocation,
+      resumeUrl: publicUrl,
       originalFilename: file.name,
       aiNotes: aiNotes || undefined,
     });
     
     return NextResponse.json(
       {
-        message: 'Resume uploaded and encrypted successfully',
+        message: 'Resume uploaded successfully',
         resume: {
           id: resume.id,
           fileName: resume.originalFilename,
           uploadedAt: resume.uploadedAt.toISOString(),
           portfolioGenerated: resume.portfolioGenerated,
+          publicUrl: resume.resumeUrl,
         },
       },
       { status: 201 }
